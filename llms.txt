@@ -1,0 +1,21 @@
+# Sudais Alam — Full Stack Developer Portfolio
+
+> Custom eCommerce website developer in Gaya, Bihar, India.
+> Hire full stack developer for web apps — Next.js, React, TypeScript, PHP/Laravel.
+> 5+ years experience, 20+ projects shipped.
+
+## Links
+
+- [Portfolio Website](https://sudaisalamboy.github.io/portfolio/)
+- [GitHub](https://github.com/sudaisalamboy)
+- [LinkedIn](https://www.linkedin.com/in/sudais-alam-65035138b)
+- [WhatsApp](https://wa.me/919117509707)
+
+## Services
+
+- Custom eCommerce Website Development
+- Full Stack Web App Development (Next.js, React, TypeScript)
+- PHP/Laravel API Development
+- Web Security (CVE Scanning, SBOM Generation)
+- Cloud Desktop (WebOS) Development
+- SEO Optimization
