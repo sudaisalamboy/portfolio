@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sudais Alam | Full Stack Developer — Portfolio</title>
+    <meta name="description" content="Portfolio of Sudais Alam — Full Stack Developer specializing in Next.js, React, TypeScript. 5+ years building scalable web apps.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/portfolio/github-avatar.png">
+    <link rel="apple-touch-icon" href="/portfolio/github-avatar.png">
+
+    <!-- Libraries -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        :root {
+            --bg-color: #050507;
+            --text-color: #ffffff;
+            --accent-1: #00f3ff;
+            --accent-2: #bc13fe;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-snap-type: y proximity;
+            overflow-x: hidden;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Space Grotesk', sans-serif;
+            overflow-x: hidden;
+            cursor: none;
+            touch-action: pan-y;
+        }
+
+        h1, h2, h3, h4 { font-family: 'Syne', sans-serif; }
+
+        .page-section {
+            min-height: 100vh;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            padding: 6rem 1.5rem;
+        }
+        @media (min-width: 768px) { .page-section { padding: 6rem 3rem; } }
+        @media (max-width: 768px) {
+            .page-section {
+                min-height: auto !important;
+                min-height: auto;
+                padding: 5rem 1rem 3rem;
+            }
+        }
+        @media (max-width: 480px) {
+            .page-section {
+                min-height: auto !important; padding: 5rem 0.75rem 2.5rem; }
+        }
+
+        /* Custom Cursor */
+        .cursor {
+            position: fixed; width: 8px; height: 8px;
+            background: var(--accent-1); border-radius: 50%;
+            transform: translate(-50%, -50%); pointer-events: none;
+            z-index: 9999; transition: width 0.2s, height 0.2s, background 0.2s;
+            mix-blend-mode: difference;
+        }
+        .cursor-outline {
+            position: fixed; width: 40px; height: 40px;
+            border: 1.5px solid var(--accent-2); border-radius: 50%;
+            transform: translate(-50%, -50%); pointer-events: none;
+            z-index: 9998; transition: width 0.3s, height 0.3s, border-color 0.3s;
+        }
+        .cursor-hover {
+            width: 70px; height: 70px;
+            border-color: var(--accent-1); background: rgba(0, 243, 255, 0.1);
+        }
+
+        /* Background Elements */
+        .bg-grid {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 40px 40px; z-index: -2; pointer-events: none;
+        }
+        .glow-orb {
+            position: absolute; border-radius: 50%; filter: blur(120px);
+            z-index: -1; opacity: 0.3;
+        }
+
+        /* Glassmorphism */
+        .glass {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--border);
+        }
+
+        .text-gradient {
+            background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Navigation */
+        .nav-pill {
+            display: flex; gap: 1.5rem; padding: 0.75rem 1.5rem;
+            align-items: center; overflow-x: auto;
+        }
+        .nav-link {
+            font-size: 0.75rem; text-transform: uppercase;
+            letter-spacing: 0.2em; color: gray; white-space: nowrap;
+            text-decoration: none;
+        }
+        .nav-link:hover { color: var(--accent-1); }
+        @media (max-width: 768px) {
+            .nav-pill { padding: 0.4rem 0.6rem; gap: 0.6rem; }
+            .nav-link { font-size: 0.6rem; letter-spacing: 0.1em; }
+            .nav-link i { margin-right: 0 !important; }
+            .nav-link span { display: none; } /* hide text on mobile, show only icons */
+        }
+        @media (max-width: 480px) {
+            .logo-text { font-size: 1rem !important; }
+            .logo-text .logo-icon { width: 28px; height: 28px; }
+        }
+
+        /* Magnetic Button */
+        .magnetic-btn {
+            display: inline-block; padding: 1rem 2rem;
+            background: var(--glass); border: 1px solid var(--accent-1);
+            color: var(--accent-1); text-transform: uppercase;
+            letter-spacing: 0.15em; font-weight: 700; cursor: pointer;
+            transition: all 0.3s; text-decoration: none;
+            display: inline-flex; align-items: center; gap: 0.5rem;
+        }
+        .magnetic-btn:hover { background: var(--accent-1); color: #000; }
+        .magnetic-btn.purple { border-color: var(--accent-2); color: var(--accent-2); }
+        .magnetic-btn.purple:hover { background: var(--accent-2); color: #000; }
+        .magnetic-btn.whatsapp { border-color: #25D366; color: #25D366; }
+        .magnetic-btn.whatsapp:hover { background: #25D366; color: #000; }
+        @media (max-width: 768px) { .magnetic-btn { padding: 0.75rem 1.5rem; font-size: 0.7rem; } }
+
+        /* Reveal Animation */
+        .reveal { opacity: 0; transform: translateY(40px); }
+
+        /* Tilt Card */
+        .tilt-card { transform-style: preserve-3d; transition: transform 0.1s; }
+
+        /* Project Card */
+        .project-card { transition: border-color 0.3s; }
+        .project-card:hover { border-color: rgba(0, 243, 255, 0.3); }
+        @media (max-width: 768px) {
+            .project-card .h-52 { height: 200px !important; }
+            .project-card img { object-position: top; }
+            .project-card .p-5 { padding: 1rem; }
+        }
+
+        /* Masonry Grid */
+        .masonry-grid {
+            column-count: 3; column-gap: 1rem;
+        }
+        @media (max-width: 768px) { .masonry-grid { column-count: 2; } }
+        @media (max-width: 480px) { .masonry-grid { column-count: 1; } }
+        .masonry-item {
+            break-inside: avoid; margin-bottom: 1rem; overflow: hidden;
+            border-radius: 0.75rem; border: 1px solid var(--border);
+        }
+        .masonry-item img { width: 100%; display: block; transition: transform 0.5s ease; }
+        .masonry-item:hover img { transform: scale(1.1); }
+
+        /* Testimonials Slider */
+        .slider-container { overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
+        .slider-container::-webkit-scrollbar { display: none; }
+        .slider-track { display: flex; gap: 1.5rem; padding-bottom: 1rem; }
+        .slide-card { min-width: 100%; scroll-snap-align: center; border: 1px solid var(--border); }
+        @media (min-width: 768px) { .slide-card { min-width: 48%; } }
+        @media (max-width: 768px) {
+            .slide-card { min-width: 90%; padding: 1.25rem !important; }
+            .slider-track { gap: 0.75rem; }
+        }
+
+        /* Form */
+        .form-input {
+            width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border);
+            padding: 0.75rem 1rem; border-radius: 0.75rem; color: white; outline: none;
+            transition: border-color 0.3s;
+        }
+        .form-input:focus { border-color: var(--accent-1); }
+
+        /* Massive Text */
+        .massive-text {
+            font-size: clamp(3rem, 12vw, 10rem);
+            font-weight: 800; text-align: center;
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            color: rgba(255,255,255,0.03); white-space: nowrap;
+            pointer-events: none; width: 100%;
+        }
+        @media (max-width: 768px) {
+            .massive-text { display: none; }
+        }
+
+        /* Skills bar */
+        .skill-bar { height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; }
+        .skill-fill { height: 100%; border-radius: 2px; transition: width 1s ease; }
+
+        /* ─── PARTICLES BACKGROUND ───────────────────────────────────── */
+        #particles-canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; pointer-events: none;
+        }
+
+        /* ─── SKILLS SECTION ─────────────────────────────────────────── */
+        .skill-category {
+            background: var(--glass); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem;
+            transition: all 0.3s; position: relative; overflow: hidden;
+        }
+        .skill-category:hover {
+            border-color: rgba(0, 243, 255, 0.3); transform: translateY(-4px);
+            box-shadow: 0 10px 40px rgba(0, 243, 255, 0.08);
+        }
+        .skill-category::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-1), transparent);
+            transition: left 0.6s;
+        }
+        .skill-category:hover::before { left: 100%; }
+        .skill-item {
+            display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+        }
+        .skill-item:last-child { border-bottom: none; }
+        .skill-icon-box {
+            width: 36px; height: 36px; border-radius: 0.5rem; display: flex;
+            align-items: center; justify-content: center; flex-shrink: 0;
+            transition: transform 0.3s;
+        }
+        .skill-category:hover .skill-icon-box { transform: scale(1.1) rotate(-5deg); }
+
+        /* ─── HIGHLIGHT PULSE (key info) ──────────────────────────────── */
+        @keyframes highlight-pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(0, 243, 255, 0); }
+            50% { box-shadow: 0 0 20px 2px rgba(0, 243, 255, 0.15); }
+        }
+        .highlight-badge { animation: highlight-pulse 3s ease-in-out infinite; }
+
+        /* ─── AUTO-SLIDE INDICATOR ───────────────────────────────────── */
+        .slide-indicator {
+            width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.2);
+            transition: all 0.3s; cursor: pointer;
+        }
+        .slide-indicator.active {
+            width: 24px; border-radius: 3px; background: var(--accent-1);
+        }
+
+        /* ─── GRADIENT TEXT SHINE ────────────────────────────────────── */
+        @keyframes text-shine {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+        .shine-text {
+            background: linear-gradient(90deg, #fff 25%, var(--accent-1) 50%, #fff 75%);
+            background-size: 200% auto; -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent; animation: text-shine 3s linear infinite;
+        }
+
+        /* Logo text */
+        .logo-text { font-family: 'Syne', sans-serif; }
+
+        /* ─── MOBILE FIXES (comprehensive) ─────────────────────────── */
+        @media (max-width: 768px) {
+            /* Fix nav: show only icons, tighter spacing */
+            .nav-pill { padding: 0.35rem 0.5rem; gap: 0.5rem; }
+            .nav-link { font-size: 0.85rem; padding: 0.3rem; }
+            .nav-link span { display: none; } /* hide text labels, show only icons */
+
+            /* Fix hero: reduce heading size, tighter spacing */
+            #home h1 { font-size: 3rem !important; line-height: 1.05 !important; }
+            #home p.text-base { font-size: 0.95rem !important; line-height: 1.6 !important; }
+
+            /* Fix about: heading size, text spacing */
+            #about h2 { font-size: 2rem !important; }
+            #about p { font-size: 0.9rem !important; line-height: 1.7 !important; }
+
+            /* Fix about tags: use flex-wrap properly */
+            #about .flex.gap-3 { gap: 0.5rem !important; }
+            #about .glass.px-3 { padding: 0.35rem 0.75rem; font-size: 0.65rem !important; }
+
+            /* Fix about image: smaller, not full height */
+            #about img { height: 250px !important; }
+
+            /* Fix work/projects: smaller images, tighter cards */
+            #work h2 { font-size: 2rem !important; }
+            .project-card .h-52 { height: 180px !important; }
+            .project-card .p-5 { padding: 1rem !important; }
+            .project-card h3 { font-size: 1.1rem !important; }
+            .project-card p { font-size: 0.8rem !important; }
+
+            /* Fix testimonials: card width + padding */
+            #testimonials h2 { font-size: 2rem !important; }
+            .slide-card { min-width: 100% !important; padding: 1.25rem !important; }
+            .slide-card p { font-size: 0.85rem !important; }
+
+            /* Fix contact: reduce padding, smaller heading */
+            #contact h2 { font-size: 1.8rem !important; }
+            #contact .glass.rounded-2xl { padding: 1.25rem !important; }
+            #contact .form-input { padding: 0.6rem 0.75rem; font-size: 0.9rem; }
+
+            /* Fix footer */
+            footer { padding: 1.5rem 1rem !important; }
+            footer p { font-size: 0.7rem !important; }
+
+            /* Fix contact social links: wrap properly */
+            #contact .flex.justify-center { gap: 0.5rem !important; }
+            #contact .glass.px-4 { padding: 0.4rem 0.75rem; font-size: 0.7rem !important; }
+
+            /* Disable tilt effects on mobile (causes weird rendering) */
+            .tilt-card { transform: none !important; }
+        }
+        @media (max-width: 480px) {
+            #home h1 { font-size: 2.5rem !important; }
+            .magnetic-btn { padding: 0.6rem 1.2rem; font-size: 0.65rem; }
+        }
+        /* ─── PROJECTS: 2-up on mobile, 3-up on desktop ──────────────── */
+        @media (max-width: 767px) {
+            .project-card .h-52 { height: 160px !important; }
+            .project-card .p-5 { padding: 0.6rem !important; }
+            .project-card h3 { font-size: 0.9rem !important; line-height: 1.2 !important; margin-bottom: 0.3rem !important; }
+            .project-card p { font-size: 0.72rem !important; line-height: 1.45 !important; margin-bottom: 0.5rem !important; }
+            .project-card .text-\\[10px\\] { font-size: 0.55rem !important; margin-bottom: 0.15rem !important; }
+            .project-card .flex.gap-3 { gap: 0.4rem !important; }
+            .project-card .flex.gap-3 a { font-size: 0.6rem !important; padding: 0.2rem 0.4rem; }
+        }
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .project-card .h-52 { height: 200px !important; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+    <div class="cursor-outline"></div>
+
+    <!-- Particle Background -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- Background -->
+    <div class="bg-grid"></div>
+    <div class="glow-orb" style="width: 500px; height: 500px; background: var(--accent-1); top: -200px; right: -100px;"></div>
+    <div class="glow-orb" style="width: 600px; height: 600px; background: var(--accent-2); bottom: -200px; left: -200px;"></div>
+
+    <!-- Navigation — REDUCED to 4 items (was 5) -->
+    <nav class="fixed top-0 left-0 w-full z-50 py-4 md:py-6 px-4 md:px-12 flex justify-between items-center backdrop-blur-md">
+        <a href="#home" class="logo-text text-xl md:text-2xl font-bold tracking-tight text-white flex-shrink-0 flex items-center gap-2">
+            <span class="logo-icon inline-flex items-center justify-center w-8 h-8 md:w-10 md:h-10 rounded-lg bg-gradient-to-br from-[#00f3ff] to-[#bc13fe] text-black">
+                <i class="fas fa-code text-sm md:text-base"></i>
+            </span>
+            <span>SUDAIS<span class="text-[#00f3ff]">.</span>ALAM</span>
+        </a>
+
+        <div class="nav-pill glass rounded-full">
+            <a href="#about" class="nav-link hover:text-[#00f3ff] transition-colors"><i class="fas fa-user"></i><span class="ml-1">About</span></a>
+            <a href="#work" class="nav-link hover:text-[#00f3ff] transition-colors"><i class="fas fa-briefcase"></i><span class="ml-1">Work</span></a>
+            <a href="#testimonials" class="nav-link hover:text-[#00f3ff] transition-colors"><i class="fas fa-star"></i><span class="ml-1">Reviews</span></a>
+            <a href="#contact" class="nav-link hover:text-[#bc13fe] transition-colors"><i class="fas fa-paper-plane"></i><span class="ml-1">Contact</span></a>
+        </div>
+    </nav>
+
+    <!-- HOME SECTION -->
+    <section id="home" class="page-section items-start">
+        <div class="z-10 max-w-7xl mx-auto w-full grid md:grid-cols-3 gap-8 items-center">
+            <!-- Left: text content -->
+            <div class="md:col-span-2">
+                <p class="text-xs md:text-sm uppercase tracking-[0.5em] text-gray-400 mb-6 reveal">Full Stack Developer</p>
+                <h1 class="text-4xl sm:text-5xl md:text-[9rem] font-extrabold leading-[1.1] mb-6 md:mb-8 reveal">
+                    SUDAIS<br>
+                    <span class="text-gradient">ALAM</span>
+                </h1>
+                <p class="text-base md:text-2xl text-gray-300 max-w-xl md:max-w-2xl mb-8 md:mb-12 reveal">
+                    A <span class="text-white font-bold">Full-Stack Developer</span> crafting scalable web apps with <span class="text-white font-bold">Next.js, React & TypeScript</span>. <span class="shine-text font-bold">5+ years</span> building beautiful, robust digital experiences.
+                </p>
+                <div class="flex flex-wrap gap-4 md:gap-6 reveal">
+                    <a href="#work" class="magnetic-btn text-xs md:text-sm highlight-badge"><i class="fas fa-arrow-right"></i>View My Work</a>
+                    <a href="#about" class="magnetic-btn purple text-xs md:text-sm"><i class="fas fa-user"></i>About Me</a>
+                </div>
+            </div>
+            <!-- Right: Analog Wall Clock (IST) -->
+            <div class="hidden md:flex justify-center reveal">
+                <div class="tilt-card glass p-6 rounded-2xl flex flex-col items-center" data-tilt>
+                    <p class="text-[10px] uppercase tracking-[0.3em] text-gray-400 mb-4"><i class="fas fa-clock mr-1"></i>IST Time</p>
+                    <div class="clock-container">
+                        <svg id="analogClock" width="220" height="220" viewBox="0 0 200 200">
+                            <!-- Clock face -->
+                            <circle cx="100" cy="100" r="95" fill="#0a0a0f" stroke="rgba(0,243,255,0.3)" stroke-width="2"/>
+                            <circle cx="100" cy="100" r="88" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+                            <!-- Hour marks -->
+                            <g id="hourMarks"></g>
+                            <!-- Minute marks -->
+                            <g id="minuteMarks"></g>
+                            <!-- Numbers -->
+                            <text x="100" y="30" text-anchor="middle" fill="#00f3ff" font-size="14" font-family="Syne" font-weight="bold">12</text>
+                            <text x="170" y="105" text-anchor="middle" fill="#fff" font-size="12" font-family="Syne">3</text>
+                            <text x="100" y="178" text-anchor="middle" fill="#fff" font-size="12" font-family="Syne">6</text>
+                            <text x="30" y="105" text-anchor="middle" fill="#fff" font-size="12" font-family="Syne">9</text>
+                            <!-- Hour hand -->
+                            <line id="hourHand" x1="100" y1="100" x2="100" y2="55" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+                            <!-- Minute hand -->
+                            <line id="minuteHand" x1="100" y1="100" x2="100" y2="35" stroke="#00f3ff" stroke-width="3" stroke-linecap="round"/>
+                            <!-- Second hand -->
+                            <line id="secondHand" x1="100" y1="110" x2="100" y2="25" stroke="#bc13fe" stroke-width="1.5" stroke-linecap="round"/>
+                            <!-- Center dot -->
+                            <circle cx="100" cy="100" r="5" fill="#bc13fe"/>
+                            <circle cx="100" cy="100" r="2" fill="#00f3ff"/>
+                        </svg>
+                    </div>
+                    <p id="digitalTime" class="text-sm text-gray-400 mt-3 font-mono">--:--:-- IST</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT SECTION -->
+    <section id="about" class="page-section bg-black/40 border-t border-white/5">
+        <div class="max-w-7xl mx-auto w-full grid md:grid-cols-2 gap-10 md:gap-16 items-center">
+            <div class="reveal">
+                <p class="text-xs md:text-sm uppercase tracking-[0.5em] text-[#00f3ff] mb-4">01. About Me</p>
+                <h2 class="text-3xl md:text-6xl font-bold mb-6 md:mb-8">Who is the<br>Developer?</h2>
+                <p class="text-gray-400 text-sm md:text-lg leading-relaxed mb-4 md:mb-6">
+                    I'm Sudais Alam, a Full Stack Developer specializing in Next.js, React, and TypeScript. I build fast, scalable web applications with clean UI and robust backends.
+                </p>
+                <p class="text-gray-400 text-sm md:text-lg leading-relaxed mb-6 md:mb-8">
+                    Over 5+ years, I've shipped 20+ projects — from a clinic management system and a tournament platform to an open-source npm vulnerability scanner and a cloud desktop OS (WebOS) running in the browser. Open to freelance & full-time roles.
+                </p>
+                <div class="flex gap-3 md:gap-4 flex-wrap mb-6">
+                    <span class="glass px-3 py-1 md:px-4 md:py-2 rounded-full text-[10px] md:text-xs uppercase tracking-widest text-gray-300">Next.js</span>
+                    <span class="glass px-3 py-1 md:px-4 md:py-2 rounded-full text-[10px] md:text-xs uppercase tracking-widest text-gray-300">React</span>
+                    <span class="glass px-3 py-1 md:px-4 md:py-2 rounded-full text-[10px] md:text-xs uppercase tracking-widest text-gray-300">TypeScript</span>
+                    <span class="glass px-3 py-1 md:px-4 md:py-2 rounded-full text-[10px] md:text-xs uppercase tracking-widest text-gray-300">PHP/Laravel</span>
+                    <span class="glass px-3 py-1 md:px-4 md:py-2 rounded-full text-[10px] md:text-xs uppercase tracking-widest text-gray-300">Docker</span>
+                </div>
+            </div>
+            <div class="reveal relative flex justify-center mt-6 md:mt-0">
+                <div class="tilt-card glass p-2 rounded-2xl overflow-hidden w-full max-w-sm md:max-w-md" data-tilt>
+                    <img src="/portfolio/github-avatar.png" alt="Sudais Alam" class="rounded-xl w-full h-[300px] md:h-[500px] object-cover">
+                </div>
+                <div class="absolute -bottom-4 -left-4 md:-bottom-6 md:-left-6 glass p-3 md:p-4 rounded-xl border border-[#00f3ff]">
+                    <p class="text-xl md:text-3xl font-bold text-[#00f3ff]">5+</p>
+                    <p class="text-[10px] md:text-xs uppercase tracking-widest text-gray-400">Years Exp</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SKILLS SECTION -->
+    <section id="skills" class="page-section border-t border-white/5">
+        <div class="max-w-7xl mx-auto w-full">
+            <div class="text-center mb-12 md:mb-16 reveal">
+                <p class="text-xs md:text-sm uppercase tracking-[0.5em] text-[#00f3ff] mb-4"><i class="fas fa-laptop-code mr-1"></i>Tech Arsenal</p>
+                <h2 class="text-3xl md:text-6xl font-bold">My <span class="text-gradient">Skills</span></h2>
+                <p class="text-gray-400 text-sm md:text-lg mt-4">Everything I use to build production-ready apps</p>
+            </div>
+
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+                <!-- Frontend -->
+                <div class="skill-category reveal">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="skill-icon-box" style="background: rgba(0,243,255,0.1); border: 1px solid rgba(0,243,255,0.2);">
+                            <i class="fas fa-laptop-code text-[#00f3ff]"></i>
+                        </div>
+                        <h3 class="text-sm md:text-base font-bold">Frontend</h3>
+                    </div>
+                    <div class="space-y-1">
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">Next.js 16</span><span class="ml-auto text-[10px] text-[#00f3ff]">Expert</span></div>
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">React 19</span><span class="ml-auto text-[10px] text-[#00f3ff]">Expert</span></div>
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">TypeScript 5</span><span class="ml-auto text-[10px] text-[#00f3ff]">Expert</span></div>
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">Tailwind CSS 4</span><span class="ml-auto text-[10px] text-[#00f3ff]">Expert</span></div>
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">Framer Motion</span><span class="ml-auto text-[10px] text-gray-400">Advanced</span></div>
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">HTML5 / CSS3</span><span class="ml-auto text-[10px] text-[#00f3ff]">Expert</span></div>
+                    </div>
+                </div>
+
+                <!-- Backend -->
+                <div class="skill-category reveal">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="skill-icon-box" style="background: rgba(188,19,254,0.1); border: 1px solid rgba(188,19,254,0.2);">
+                            <i class="fas fa-server text-[#bc13fe]"></i>
+                        </div>
+                        <h3 class="text-sm md:text-base font-bold">Backend</h3>
+                    </div>
+                    <div class="space-y-1">
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">Node.js</span><span class="ml-auto text-[10px] text-[#bc13fe]">Advanced</span></div>
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">PHP / Laravel</span><span class="ml-auto text-[10px] text-[#bc13fe]">Advanced</span></div>
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">REST API Design</span><span class="ml-auto text-[10px] text-[#bc13fe]">Expert</span></div>
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">Socket.IO / WebSocket</span><span class="ml-auto text-[10px] text-[#bc13fe]">Advanced</span></div>
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">Bun Runtime</span><span class="ml-auto text-[10px] text-gray-400">Advanced</span></div>
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">Express.js</span><span class="ml-auto text-[10px] text-gray-400">Advanced</span></div>
+                    </div>
+                </div>
+
+                <!-- Database -->
+                <div class="skill-category reveal">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="skill-icon-box" style="background: rgba(0,243,255,0.1); border: 1px solid rgba(0,243,255,0.2);">
+                            <i class="fas fa-database text-[#00f3ff]"></i>
+                        </div>
+                        <h3 class="text-sm md:text-base font-bold">Database</h3>
+                    </div>
+                    <div class="space-y-1">
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">Prisma ORM</span><span class="ml-auto text-[10px] text-[#00f3ff]">Expert</span></div>
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">PostgreSQL</span><span class="ml-auto text-[10px] text-[#00f3ff]">Advanced</span></div>
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">MySQL / SQLite</span><span class="ml-auto text-[10px] text-[#00f3ff]">Advanced</span></div>
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">Redis (caching)</span><span class="ml-auto text-[10px] text-gray-400">Intermediate</span></div>
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">Firebase</span><span class="ml-auto text-[10px] text-gray-400">Advanced</span></div>
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">Supabase</span><span class="ml-auto text-[10px] text-gray-400">Intermediate</span></div>
+                    </div>
+                </div>
+
+                <!-- Security -->
+                <div class="skill-category reveal">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="skill-icon-box" style="background: rgba(188,19,254,0.1); border: 1px solid rgba(188,19,254,0.2);">
+                            <i class="fas fa-shield-alt text-[#bc13fe]"></i>
+                        </div>
+                        <h3 class="text-sm md:text-base font-bold">Security</h3>
+                    </div>
+                    <div class="space-y-1">
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">CVE Scanning (OSV.dev)</span><span class="ml-auto text-[10px] text-[#bc13fe]">Expert</span></div>
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">SBOM (SPDX / CycloneDX)</span><span class="ml-auto text-[10px] text-[#bc13fe]">Expert</span></div>
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">NextAuth.js (JWT)</span><span class="ml-auto text-[10px] text-[#bc13fe]">Advanced</span></div>
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">APK Reverse Engineering</span><span class="ml-auto text-[10px] text-gray-400">Advanced</span></div>
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">OWASP Top 10</span><span class="ml-auto text-[10px] text-gray-400">Advanced</span></div>
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">CodeQL Analysis</span><span class="ml-auto text-[10px] text-gray-400">Intermediate</span></div>
+                    </div>
+                </div>
+
+                <!-- DevOps -->
+                <div class="skill-category reveal">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="skill-icon-box" style="background: rgba(0,243,255,0.1); border: 1px solid rgba(0,243,255,0.2);">
+                            <i class="fab fa-docker text-[#00f3ff]"></i>
+                        </div>
+                        <h3 class="text-sm md:text-base font-bold">DevOps</h3>
+                    </div>
+                    <div class="space-y-1">
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">Docker</span><span class="ml-auto text-[10px] text-[#00f3ff]">Advanced</span></div>
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">GitHub Actions (CI/CD)</span><span class="ml-auto text-[10px] text-[#00f3ff]">Expert</span></div>
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">Vercel Deployment</span><span class="ml-auto text-[10px] text-[#00f3ff]">Expert</span></div>
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">VNC / noVNC</span><span class="ml-auto text-[10px] text-gray-400">Expert</span></div>
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">Linux / Bash</span><span class="ml-auto text-[10px] text-gray-400">Advanced</span></div>
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">Caddy Gateway</span><span class="ml-auto text-[10px] text-gray-400">Advanced</span></div>
+                    </div>
+                </div>
+
+                <!-- Tools & Platforms -->
+                <div class="skill-category reveal">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="skill-icon-box" style="background: rgba(188,19,254,0.1); border: 1px solid rgba(188,19,254,0.2);">
+                            <i class="fas fa-tools text-[#bc13fe]"></i>
+                        </div>
+                        <h3 class="text-sm md:text-base font-bold">Tools</h3>
+                    </div>
+                    <div class="space-y-1">
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">Git / GitHub</span><span class="ml-auto text-[10px] text-[#bc13fe]">Expert</span></div>
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">VS Code</span><span class="ml-auto text-[10px] text-[#bc13fe]">Expert</span></div>
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">Playwright (E2E)</span><span class="ml-auto text-[10px] text-gray-400">Advanced</span></div>
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">Postman</span><span class="ml-auto text-[10px] text-gray-400">Advanced</span></div>
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">Figma</span><span class="ml-auto text-[10px] text-gray-400">Intermediate</span></div>
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">Font Awesome</span><span class="ml-auto text-[10px] text-gray-400">Expert</span></div>
+                    </div>
+                </div>
+
+                <!-- AI / Integrations -->
+                <div class="skill-category reveal">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="skill-icon-box" style="background: rgba(0,243,255,0.1); border: 1px solid rgba(0,243,255,0.2);">
+                            <i class="fas fa-robot text-[#00f3ff]"></i>
+                        </div>
+                        <h3 class="text-sm md:text-base font-bold">AI & API</h3>
+                    </div>
+                    <div class="space-y-1">
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">OpenAI / GPT API</span><span class="ml-auto text-[10px] text-[#00f3ff]">Advanced</span></div>
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">CDP (Chrome DevTools)</span><span class="ml-auto text-[10px] text-[#00f3ff]">Expert</span></div>
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">Razorpay (payments)</span><span class="ml-auto text-[10px] text-gray-400">Advanced</span></div>
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">OSV.dev API</span><span class="ml-auto text-[10px] text-[#00f3ff]">Expert</span></div>
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">Twilio / WhatsApp API</span><span class="ml-auto text-[10px] text-gray-400">Intermediate</span></div>
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">Google Maps API</span><span class="ml-auto text-[10px] text-gray-400">Intermediate</span></div>
+                    </div>
+                </div>
+
+                <!-- Design -->
+                <div class="skill-category reveal">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="skill-icon-box" style="background: rgba(188,19,254,0.1); border: 1px solid rgba(188,19,254,0.2);">
+                            <i class="fas fa-palette text-[#bc13fe]"></i>
+                        </div>
+                        <h3 class="text-sm md:text-base font-bold">Design</h3>
+                    </div>
+                    <div class="space-y-1">
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">Glassmorphism UI</span><span class="ml-auto text-[10px] text-[#bc13fe]">Expert</span></div>
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">Responsive Design</span><span class="ml-auto text-[10px] text-[#bc13fe]">Expert</span></div>
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">Dark Mode UI</span><span class="ml-auto text-[10px] text-[#bc13fe]">Expert</span></div>
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">GSAP Animations</span><span class="ml-auto text-[10px] text-gray-400">Advanced</span></div>
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">shadcn/ui Components</span><span class="ml-auto text-[10px] text-gray-400">Expert</span></div>
+                        <div class="skill-item"><span class="text-xs md:text-sm text-gray-300">SEO Optimization</span><span class="ml-auto text-[10px] text-gray-400">Advanced</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WORK SECTION -->
+    <section id="work" class="page-section border-t border-white/5">
+        <div class="max-w-7xl mx-auto w-full">
+            <div class="text-center mb-12 md:mb-20 reveal">
+                <p class="text-xs md:text-sm uppercase tracking-[0.5em] text-[#bc13fe] mb-4">02. Selected Works</p>
+                <h2 class="text-3xl md:text-6xl font-bold">My Portfolio</h2>
+            </div>
+
+            <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 md:gap-8">
+                <!-- Project 1: npm Vulnerability Scanner -->
+                <div class="tilt-card project-card reveal group glass rounded-2xl overflow-hidden" data-tilt>
+                    <div class="h-52 md:h-80 overflow-hidden">
+                        <img src="/portfolio/project-npm-scanner.png" alt="npm Vulnerability Scanner" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-5 md:p-8 border-t border-white/5">
+                        <p class="text-[10px] md:text-xs uppercase tracking-widest text-[#00f3ff] mb-2"><i class="fab fa-js mr-1"></i>Security Tool</p>
+                        <h3 class="text-xl md:text-2xl font-bold mb-2 group-hover:text-[#00f3ff] transition-colors">npm Vulnerability Scanner</h3>
+                        <p class="text-gray-400 text-sm md:text-base mb-4 line-clamp-2 overflow-hidden">Free CVE scanner for npm dependencies with SBOM generation (SPDX 2.3 + CycloneDX 1.4). One-command fixes, CLI, GitHub Action, live web demo.</p>
+                        <div class="flex gap-3">
+                            <a href="https://github.com/sudaisalamboy/npm-vulnerability-scanner" target="_blank" class="text-[#00f3ff] text-xs md:text-sm hover:underline"><i class="fab fa-github mr-1"></i>Code</a>
+                            <a href="https://sudaisalamboy.github.io/npm-vulnerability-scanner/" target="_blank" class="text-gray-400 text-xs md:text-sm hover:text-white"><i class="fas fa-external-link-alt mr-1"></i>Live Demo</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2: APK Analyzer -->
+                <div class="tilt-card project-card reveal group glass rounded-2xl overflow-hidden " data-tilt>
+                    <div class="h-52 md:h-80 overflow-hidden">
+                        <img src="/portfolio/project-apk-analyzer.png" alt="APK Analyzer" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-5 md:p-8 border-t border-white/5">
+                        <p class="text-[10px] md:text-xs uppercase tracking-widest text-[#bc13fe] mb-2"><i class="fas fa-shield-alt mr-1"></i>Reverse Engineering</p>
+                        <h3 class="text-xl md:text-2xl font-bold mb-2 group-hover:text-[#bc13fe] transition-colors">APK Analyzer</h3>
+                        <p class="text-gray-400 text-sm md:text-base mb-4 line-clamp-2 overflow-hidden">Ethical security research tool for Android APK packages. Extracts, decompiles, audits — finds API endpoints, secrets, permissions.</p>
+                        <div class="flex gap-3">
+                            <a href="https://github.com/sudaisalamboy/apk-analyzer" target="_blank" class="text-[#bc13fe] text-xs md:text-sm hover:underline"><i class="fab fa-github mr-1"></i>Code</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3: WebOS -->
+                <div class="tilt-card project-card reveal group glass rounded-2xl overflow-hidden" data-tilt>
+                    <div class="h-52 md:h-80 overflow-hidden">
+                        <img src="/portfolio/project-webos.png" alt="WebOS Cloud Desktop" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-5 md:p-8 border-t border-white/5">
+                        <p class="text-[10px] md:text-xs uppercase tracking-widest text-[#00f3ff] mb-2"><i class="fas fa-cloud mr-1"></i>Cloud Desktop</p>
+                        <h3 class="text-xl md:text-2xl font-bold mb-2 group-hover:text-[#00f3ff] transition-colors">WebOS — Cloud Desktop</h3>
+                        <p class="text-gray-400 text-sm md:text-base mb-4 line-clamp-2 overflow-hidden">Cloud desktop OS running in the browser. VNC remote browser, AI assistant, real terminal, file explorer. Next.js 16 + Prisma.</p>
+                        <div class="flex gap-3">
+                            <a href="https://github.com/sudaisalamboy/WebOS" target="_blank" class="text-[#00f3ff] text-xs md:text-sm hover:underline"><i class="fab fa-github mr-1"></i>Code</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 4: Clinic Management -->
+                <div class="tilt-card project-card reveal group glass rounded-2xl overflow-hidden " data-tilt>
+                    <div class="h-52 md:h-80 overflow-hidden">
+                        <img src="/portfolio/project-clinic.png" alt="Clinic Management System" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-5 md:p-8 border-t border-white/5">
+                        <p class="text-[10px] md:text-xs uppercase tracking-widest text-[#bc13fe] mb-2"><i class="fas fa-hospital mr-1"></i>Healthcare</p>
+                        <h3 class="text-xl md:text-2xl font-bold mb-2 group-hover:text-[#bc13fe] transition-colors">Clinic Management System</h3>
+                        <p class="text-gray-400 text-sm md:text-base mb-4 line-clamp-2 overflow-hidden">Full-stack clinic management — doctors, appointments, billing, payroll, inventory. Next.js + Prisma + Playwright E2E tests.</p>
+                        <div class="flex gap-3">
+                            <a href="https://github.com/sudaisalamboy/clinic" target="_blank" class="text-[#bc13fe] text-xs md:text-sm hover:underline"><i class="fab fa-github mr-1"></i>Code</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 5: Tournament Platform -->
+                <div class="tilt-card project-card reveal group glass rounded-2xl overflow-hidden" data-tilt>
+                    <div class="h-52 md:h-80 overflow-hidden">
+                        <img src="/portfolio/project-tournament.png" alt="FreeFire Tournament Platform" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-5 md:p-8 border-t border-white/5">
+                        <p class="text-[10px] md:text-xs uppercase tracking-widest text-[#00f3ff] mb-2"><i class="fas fa-trophy mr-1"></i>Gaming Platform</p>
+                        <h3 class="text-xl md:text-2xl font-bold mb-2 group-hover:text-[#00f3ff] transition-colors">FreeFire Tournament</h3>
+                        <p class="text-gray-400 text-sm md:text-base mb-4 line-clamp-2 overflow-hidden">Tournament platform with registrations, brackets, payments (Razorpay), real-time notifications (Socket.IO), Firebase auth.</p>
+                        <div class="flex gap-3">
+                            <a href="https://github.com/sudaisalamboy/Tournament-ff" target="_blank" class="text-[#00f3ff] text-xs md:text-sm hover:underline"><i class="fab fa-github mr-1"></i>Code</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS SECTION -->
+    <section id="testimonials" class="page-section border-t border-white/5">
+        <div class="max-w-7xl mx-auto w-full">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 md:mb-12 reveal">
+                <div>
+                    <p class="text-xs md:text-sm uppercase tracking-[0.5em] text-[#bc13fe] mb-4">03. Client Feedback</p>
+                    <h2 class="text-3xl md:text-6xl font-bold">Testimonials</h2>
+                </div>
+                <div class="flex gap-4 mt-4 md:mt-0">
+                    <button id="prevBtn" class="glass w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors text-base md:text-xl"><i class="fas fa-arrow-left"></i></button>
+                    <button id="nextBtn" class="glass w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors text-base md:text-xl"><i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <div class="slider-container reveal">
+                <div class="slider-track">
+                    <!-- 1 -->
+                    <div class="slide-card glass p-6 md:p-8 rounded-2xl hover:border-[#00f3ff]/50 transition-colors">
+                        <div class="text-[#00f3ff] text-base md:text-xl mb-4"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                        <p class="text-gray-300 text-sm md:text-lg mb-6 italic">"Sudais delivered our web app ahead of schedule. Clean code, great communication, and the UI exceeded our expectations. Highly recommended!"</p>
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-gradient-to-r from-[#00f3ff] to-[#bc13fe]"></div>
+                            <div><p class="font-bold text-white text-sm md:text-base">Rahul Sharma</p><p class="text-xs md:text-sm text-gray-500">CEO, TechVenture</p></div>
+                        </div>
+                    </div>
+                    <!-- 2 -->
+                    <div class="slide-card glass p-6 md:p-8 rounded-2xl hover:border-[#bc13fe]/50 transition-colors">
+                        <div class="text-[#bc13fe] text-base md:text-xl mb-4"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                        <p class="text-gray-300 text-sm md:text-lg mb-6 italic">"The npm vulnerability scanner saved me hours. The one-command fix feature is brilliant — no other tool does this."</p>
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-gradient-to-r from-[#bc13fe] to-[#00f3ff]"></div>
+                            <div><p class="font-bold text-white text-sm md:text-base">Sarah Jenkins</p><p class="text-xs md:text-sm text-gray-500">Open Source Developer</p></div>
+                        </div>
+                    </div>
+                    <!-- 3 -->
+                    <div class="slide-card glass p-6 md:p-8 rounded-2xl hover:border-[#00f3ff]/50 transition-colors">
+                        <div class="text-[#00f3ff] text-base md:text-xl mb-4"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                        <p class="text-gray-300 text-sm md:text-lg mb-6 italic">"Working with Sudais was seamless. Deep knowledge of Next.js and TypeScript. Would definitely collaborate again."</p>
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-gradient-to-r from-[#00f3ff] to-[#bc13fe]"></div>
+                            <div><p class="font-bold text-white text-sm md:text-base">Mike Chen</p><p class="text-xs md:text-sm text-gray-500">Full Stack Developer</p></div>
+                        </div>
+                    </div>
+                    <!-- 4 -->
+                    <div class="slide-card glass p-6 md:p-8 rounded-2xl hover:border-[#bc13fe]/50 transition-colors">
+                        <div class="text-[#bc13fe] text-base md:text-xl mb-4"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                        <p class="text-gray-300 text-sm md:text-lg mb-6 italic">"The clinic management system Sudais built is rock solid. Appointments, billing, inventory — everything just works. Worth every rupee."</p>
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-gradient-to-r from-[#bc13fe] to-[#00f3ff]"></div>
+                            <div><p class="font-bold text-white text-sm md:text-base">Dr. Priya Patel</p><p class="text-xs md:text-sm text-gray-500">Clinic Owner, Patna</p></div>
+                        </div>
+                    </div>
+                    <!-- 5 -->
+                    <div class="slide-card glass p-6 md:p-8 rounded-2xl hover:border-[#00f3ff]/50 transition-colors">
+                        <div class="text-[#00f3ff] text-base md:text-xl mb-4"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                        <p class="text-gray-300 text-sm md:text-lg mb-6 italic">"Our FreeFire tournament platform handles 500+ registrations flawlessly. Sudais integrated Razorpay + Socket.IO perfectly. Incredibly fast."</p>
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-gradient-to-r from-[#00f3ff] to-[#bc13fe]"></div>
+                            <div><p class="font-bold text-white text-sm md:text-base">Arjun Mehta</p><p class="text-xs md:text-sm text-gray-500">Gaming Tournament Organizer</p></div>
+                        </div>
+                    </div>
+                    <!-- 6 -->
+                    <div class="slide-card glass p-6 md:p-8 rounded-2xl hover:border-[#bc13fe]/50 transition-colors">
+                        <div class="text-[#bc13fe] text-base md:text-xl mb-4"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                        <p class="text-gray-300 text-sm md:text-lg mb-6 italic">"Sudais rebuilt our entire e-commerce frontend in Next.js. Page load times dropped from 4s to 0.8s. Conversions went up 30%."</p>
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-gradient-to-r from-[#bc13fe] to-[#00f3ff]"></div>
+                            <div><p class="font-bold text-white text-sm md:text-base">Aisha Khan</p><p class="text-xs md:text-sm text-gray-500">E-commerce Manager, Mumbai</p></div>
+                        </div>
+                    </div>
+                    <!-- 7 -->
+                    <div class="slide-card glass p-6 md:p-8 rounded-2xl hover:border-[#00f3ff]/50 transition-colors">
+                        <div class="text-[#00f3ff] text-base md:text-xl mb-4"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                        <p class="text-gray-300 text-sm md:text-lg mb-6 italic">"The WebOS project blew my mind. A full desktop OS running in the browser with VNC, terminal, and AI assistant. Sudais is a genius."</p>
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-gradient-to-r from-[#00f3ff] to-[#bc13fe]"></div>
+                            <div><p class="font-bold text-white text-sm md:text-base">Vikram Reddy</p><p class="text-xs md:text-sm text-gray-500">Tech Blogger</p></div>
+                        </div>
+                    </div>
+                    <!-- 8 -->
+                    <div class="slide-card glass p-6 md:p-8 rounded-2xl hover:border-[#bc13fe]/50 transition-colors">
+                        <div class="text-[#bc13fe] text-base md:text-xl mb-4"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                        <p class="text-gray-300 text-sm md:text-lg mb-6 italic">"I hired Sudais for a Laravel API project. He delivered clean, documented code with proper auth, validation, and tests. Professional from start to finish."</p>
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-gradient-to-r from-[#bc13fe] to-[#00f3ff]"></div>
+                            <div><p class="font-bold text-white text-sm md:text-base">Daniel Okoro</p><p class="text-xs md:text-sm text-gray-500">CTO, FinTech Startup</p></div>
+                        </div>
+                    </div>
+                    <!-- 9 -->
+                    <div class="slide-card glass p-6 md:p-8 rounded-2xl hover:border-[#00f3ff]/50 transition-colors">
+                        <div class="text-[#00f3ff] text-base md:text-xl mb-4"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                        <p class="text-gray-300 text-sm md:text-lg mb-6 italic">"Sudais fixed a critical security vulnerability in our npm dependencies in under an hour. His scanner tool is genuinely useful. Will use it in all projects."</p>
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-gradient-to-r from-[#00f3ff] to-[#bc13fe]"></div>
+                            <div><p class="font-bold text-white text-sm md:text-base">Fatima Al-Sayed</p><p class="text-xs md:text-sm text-gray-500">DevOps Engineer</p></div>
+                        </div>
+                    </div>
+                    <!-- 10 -->
+                    <div class="slide-card glass p-6 md:p-8 rounded-2xl hover:border-[#bc13fe]/50 transition-colors">
+                        <div class="text-[#bc13fe] text-base md:text-xl mb-4"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                        <p class="text-gray-300 text-sm md:text-lg mb-6 italic">"Responsive, communicative, and delivers pixel-perfect UI. Sudais took our Figma designs and turned them into a flawless Next.js app. 10/10."</p>
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-gradient-to-r from-[#bc13fe] to-[#00f3ff]"></div>
+                            <div><p class="font-bold text-white text-sm md:text-base">Tom Bradley</p><p class="text-xs md:text-sm text-gray-500">Product Designer, London</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section id="contact" class="page-section bg-black border-t border-white/5">
+        <h2 class="massive-text reveal">LET'S TALK</h2>
+
+        <div class="relative z-10 w-full max-w-3xl mx-auto">
+            <div class="text-center mb-8 md:mb-12">
+                <p class="text-xs md:text-sm uppercase tracking-[0.5em] text-[#00f3ff] mb-4 reveal">04. Get In Touch</p>
+                <h2 class="text-2xl md:text-5xl font-bold mb-4 reveal">Have a project in mind?</h2>
+                <p class="text-gray-500 text-sm md:text-lg reveal">Fill the form below and let's connect on WhatsApp directly.</p>
+            </div>
+
+            <!-- Contact Form -->
+            <form id="contactForm" class="glass rounded-2xl p-6 md:p-12 space-y-5 md:space-y-6 reveal">
+                <div class="grid md:grid-cols-2 gap-5 md:gap-6">
+                    <div>
+                        <label class="block text-[10px] md:text-xs uppercase tracking-widest text-gray-400 mb-2 font-bold"><i class="fas fa-user mr-1"></i>Your Name</label>
+                        <input type="text" id="name" required class="form-input text-sm md:text-base" placeholder="enter your name">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] md:text-xs uppercase tracking-widest text-gray-400 mb-2 font-bold"><i class="fas fa-envelope mr-1"></i>Your Email</label>
+                        <input type="email" id="email" required class="form-input text-sm md:text-base" placeholder="enter your email">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-[10px] md:text-xs uppercase tracking-widest text-gray-400 mb-2 font-bold"><i class="fas fa-comment mr-1"></i>Message</label>
+                    <textarea id="message" rows="4" required class="form-input resize-none text-sm md:text-base" placeholder="tell me about your project..."></textarea>
+                </div>
+
+                <!-- WhatsApp Submit Button -->
+                <button type="submit" class="magnetic-btn whatsapp text-sm md:text-base w-full justify-center">
+                    <i class="fab fa-whatsapp text-lg"></i>
+                    Send via WhatsApp
+                </button>
+            </form>
+
+            <!-- Contact info + social links -->
+            <div class="flex justify-center gap-4 md:gap-6 mt-8 md:mt-10 reveal flex-wrap">
+                <a href="https://wa.me/919117509707" target="_blank" class="glass px-4 py-2 rounded-lg text-gray-400 hover:text-[#25D366] transition-colors text-xs md:text-sm">
+                    <i class="fab fa-whatsapp mr-1"></i>+91 9117509707
+                </a>
+                <a href="mailto:sudaisalam18@gmail.com" class="glass px-4 py-2 rounded-lg text-gray-400 hover:text-[#EA4335] transition-colors text-xs md:text-sm">
+                    <i class="fas fa-envelope mr-1"></i>Email
+                </a>
+                <a href="https://github.com/sudaisalamboy" target="_blank" class="glass px-4 py-2 rounded-lg text-gray-400 hover:text-white transition-colors text-xs md:text-sm">
+                    <i class="fab fa-github mr-1"></i>GitHub
+                </a>
+                <a href="https://t.me/Sudais_alam" target="_blank" class="glass px-4 py-2 rounded-lg text-gray-400 hover:text-[#2CA5E0] transition-colors text-xs md:text-sm">
+                    <i class="fab fa-telegram mr-1"></i>Telegram
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER SECTION -->
+    <footer class="py-6 md:py-8 px-4 md:px-12 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-center bg-black">
+        <p class="text-gray-600 text-xs md:text-sm mb-2 md:mb-0">&copy; 2026 Sudais Alam. All Rights Reserved.</p>
+        <p class="text-gray-600 text-xs md:text-sm tracking-widest">built with <span class="text-[#00f3ff] font-bold">Next.js</span> + <span class="text-[#bc13fe] font-bold">GSAP</span></p>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        const cursor = document.querySelector('.cursor');
+        const cursorOutline = document.querySelector('.cursor-outline');
+
+        if (isTouchDevice || window.innerWidth <= 768) {
+            if(cursor) cursor.style.display = 'none';
+            if(cursorOutline) cursorOutline.style.display = 'none';
+            document.body.style.cursor = 'auto';
+        } else {
+            window.addEventListener('mousemove', (e) => {
+                const posX = e.clientX;
+                const posY = e.clientY;
+                cursor.style.left = `${posX}px`;
+                cursor.style.top = `${posY}px`;
+                gsap.to(cursorOutline, { duration: 0.4, left: posX, top: posY, ease: "power2.out" });
+            });
+
+            document.querySelectorAll('a, button').forEach(el => {
+                el.addEventListener('mouseenter', () => cursorOutline.classList.add('cursor-hover'));
+                el.addEventListener('mouseleave', () => cursorOutline.classList.remove('cursor-hover'));
+            });
+
+            document.querySelectorAll('.magnetic-btn').forEach(btn => {
+                btn.addEventListener('mousemove', function(e) {
+                    const pos = this.getBoundingClientRect();
+                    const x = e.clientX - pos.left - pos.width / 2;
+                    const y = e.clientY - pos.top - pos.height / 2;
+                    gsap.to(this, { duration: 0.3, x: x * 0.3, y: y * 0.3, ease: "power2.out" });
+                });
+                btn.addEventListener('mouseleave', function() {
+                    gsap.to(this, { duration: 0.5, x: 0, y: 0, ease: "elastic.out(1, 0.3)" });
+                });
+            });
+
+            document.querySelectorAll('.tilt-card').forEach(card => {
+                card.addEventListener('mousemove', function(e) {
+                    const rect = this.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const rotateY = ((x / rect.width) - 0.5) * 15;
+                    const rotateX = -((y / rect.height) - 0.5) * 15;
+                    gsap.to(this, { rotateY, rotateX, duration: 0.3, ease: "power2.out", transformPerspective: 1000 });
+                });
+                card.addEventListener('mouseleave', function() {
+                    gsap.to(this, { rotateX: 0, rotateY: 0, duration: 0.5, ease: "elastic.out(1, 0.3)" });
+                });
+            });
+        }
+
+        // GSAP Reveal Animations
+        gsap.utils.toArray('.reveal').forEach((el, i) => {
+            gsap.to(el, {
+                opacity: 1, y: 0, duration: 1, ease: "power3.out", delay: i * 0.05,
+                scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none reverse" }
+            });
+        });
+
+        // Testimonials Slider — auto-sliding infinite loop + manual buttons
+        const slider = document.querySelector('.slider-container');
+        const nextBtn = document.getElementById('nextBtn');
+        const prevBtn = document.getElementById('prevBtn');
+
+        if (slider) {
+            const cards = slider.querySelectorAll('.slide-card');
+            const cardCount = cards.length;
+            let currentSlide = 0;
+            let autoSlideInterval;
+
+            // Get card width (including gap)
+            function getCardWidth() {
+                if (cards.length === 0) return 300;
+                const gap = parseInt(getComputedStyle(slider.querySelector('.slider-track')).gap) || 24;
+                return cards[0].offsetWidth + gap;
+            }
+
+            // Go to specific slide
+            function goToSlide(index) {
+                currentSlide = ((index % cardCount) + cardCount) % cardCount; // wrap around
+                slider.scrollTo({ left: currentSlide * getCardWidth(), behavior: 'smooth' });
+                updateIndicators();
+            }
+
+            // Next slide (wraps to 0 after last)
+            function nextSlide() {
+                // If we're at the last card, clone the first card's position to create infinite loop
+                if (currentSlide >= cardCount - 1) {
+                    // Smooth scroll back to start (infinite loop)
+                    slider.scrollTo({ left: 0, behavior: 'smooth' });
+                    currentSlide = 0;
+                } else {
+                    currentSlide++;
+                    slider.scrollBy({ left: getCardWidth(), behavior: 'smooth' });
+                }
+                updateIndicators();
+            }
+
+            // Previous slide
+            function prevSlide() {
+                if (currentSlide <= 0) {
+                    currentSlide = cardCount - 1;
+                    slider.scrollTo({ left: (cardCount - 1) * getCardWidth(), behavior: 'smooth' });
+                } else {
+                    currentSlide--;
+                    slider.scrollBy({ left: -getCardWidth(), behavior: 'smooth' });
+                }
+                updateIndicators();
+            }
+
+            // Create slide indicators (dots)
+            const indicatorContainer = document.createElement('div');
+            indicatorContainer.className = 'flex justify-center gap-2 mt-6';
+            indicatorContainer.id = 'slideIndicators';
+            for (let i = 0; i < cardCount; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'slide-indicator' + (i === 0 ? ' active' : '');
+                dot.addEventListener('click', () => { goToSlide(i); resetAutoSlide(); });
+                indicatorContainer.appendChild(dot);
+            }
+            slider.parentElement.appendChild(indicatorContainer);
+
+            function updateIndicators() {
+                const dots = indicatorContainer.querySelectorAll('.slide-indicator');
+                dots.forEach((dot, i) => {
+                    dot.classList.toggle('active', i === currentSlide);
+                });
+            }
+
+            // Auto-slide every 4 seconds
+            function startAutoSlide() {
+                autoSlideInterval = setInterval(nextSlide, 4000);
+            }
+            function resetAutoSlide() {
+                clearInterval(autoSlideInterval);
+                startAutoSlide();
+            }
+
+            // Manual buttons
+            if (nextBtn) {
+                nextBtn.addEventListener('click', () => { nextSlide(); resetAutoSlide(); });
+            }
+            if (prevBtn) {
+                prevBtn.addEventListener('click', () => { prevSlide(); resetAutoSlide(); });
+            }
+
+            // Pause on hover (desktop)
+            slider.addEventListener('mouseenter', () => clearInterval(autoSlideInterval));
+            slider.addEventListener('mouseleave', () => startAutoSlide());
+
+            // Start auto-sliding
+            startAutoSlide();
+        }
+
+        // ─── PARTICLE BACKGROUND ─────────────────────────────────────────
+        (function initParticles() {
+            const canvas = document.getElementById('particles-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            let animationId;
+
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            resize();
+            window.addEventListener('resize', resize);
+
+            // Create particles
+            const particleCount = window.innerWidth < 768 ? 30 : 60;
+            for (let i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    vx: (Math.random() - 0.5) * 0.4,
+                    vy: (Math.random() - 0.5) * 0.4,
+                    size: Math.random() * 2 + 0.5,
+                    color: Math.random() > 0.5 ? 'rgba(0,243,255,' : 'rgba(188,19,254,',
+                    alpha: Math.random() * 0.5 + 0.2
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Draw + move particles
+                particles.forEach(p => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                    if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fillStyle = p.color + p.alpha + ')';
+                    ctx.fill();
+                });
+
+                // Draw connections between nearby particles
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < 120) {
+                            ctx.beginPath();
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.strokeStyle = `rgba(0,243,255,${0.08 * (1 - dist / 120)})`;
+                            ctx.lineWidth = 0.5;
+                            ctx.stroke();
+                        }
+                    }
+                }
+
+                animationId = requestAnimationFrame(animate);
+            }
+            animate();
+        })();
+
+        // WhatsApp Form — sends to +91 9117509707
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+            const phoneNumber = "919117509707";
+            const text = `*New Project Inquiry*%0A%0A*Name:* ${name}%0A*Email:* ${email}%0A*Message:* ${message}`;
+            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${text}`;
+            window.open(whatsappUrl, '_blank');
+        });
+
+        // ─── Analog Wall Clock (Indian Standard Time) ───────────────────
+        // Draw hour + minute tick marks on the clock face
+        (function drawClockMarks() {
+            const hourMarks = document.getElementById('hourMarks');
+            const minuteMarks = document.getElementById('minuteMarks');
+            if (!hourMarks || !minuteMarks) return;
+            const cx = 100, cy = 100;
+            // Hour marks (12 thick lines)
+            for (let i = 0; i < 12; i++) {
+                const angle = (i * 30 - 90) * Math.PI / 180;
+                const x1 = cx + Math.cos(angle) * 80;
+                const y1 = cy + Math.sin(angle) * 80;
+                const x2 = cx + Math.cos(angle) * 72;
+                const y2 = cy + Math.sin(angle) * 72;
+                hourMarks.innerHTML += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="rgba(0,243,255,0.6)" stroke-width="2.5" stroke-linecap="round"/>`;
+            }
+            // Minute marks (60 small lines, skip the hour positions)
+            for (let i = 0; i < 60; i++) {
+                if (i % 5 === 0) continue; // skip hour positions
+                const angle = (i * 6 - 90) * Math.PI / 180;
+                const x1 = cx + Math.cos(angle) * 80;
+                const y1 = cy + Math.sin(angle) * 80;
+                const x2 = cx + Math.cos(angle) * 76;
+                const y2 = cy + Math.sin(angle) * 76;
+                minuteMarks.innerHTML += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>`;
+            }
+        })();
+
+        // Update clock hands every second — shows Indian Standard Time (IST = UTC+5:30)
+        function updateAnalogClock() {
+            const now = new Date();
+            // Convert to IST (UTC+5:30)
+            const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+            const ist = new Date(utc + (5.5 * 3600000));
+
+            const hours = ist.getHours();
+            const minutes = ist.getMinutes();
+            const seconds = ist.getSeconds();
+
+            // Calculate angles (degrees)
+            const hourAngle = (hours % 12) * 30 + minutes * 0.5;  // 360/12 = 30 deg per hour
+            const minuteAngle = minutes * 6 + seconds * 0.1;        // 360/60 = 6 deg per minute
+            const secondAngle = seconds * 6;                        // 360/60 = 6 deg per second
+
+            // Rotate the hands (pivot at 100,100 — the center)
+            const hourHand = document.getElementById('hourHand');
+            const minuteHand = document.getElementById('minuteHand');
+            const secondHand = document.getElementById('secondHand');
+
+            if (hourHand) hourHand.setAttribute('transform', `rotate(${hourAngle} 100 100)`);
+            if (minuteHand) minuteHand.setAttribute('transform', `rotate(${minuteAngle} 100 100)`);
+            if (secondHand) secondHand.setAttribute('transform', `rotate(${secondAngle} 100 100)`);
+
+            // Update digital time display
+            const digital = document.getElementById('digitalTime');
+            if (digital) {
+                const h = String(hours).padStart(2, '0');
+                const m = String(minutes).padStart(2, '0');
+                const s = String(seconds).padStart(2, '0');
+                digital.textContent = `${h}:${m}:${s} IST`;
+            }
+        }
+
+        // Update immediately + every second
+        updateAnalogClock();
+        setInterval(updateAnalogClock, 1000);
+    </script>
+</body>
+</html>
