@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://sudaisalamboy.github.io/portfolio/sitemap.xml
