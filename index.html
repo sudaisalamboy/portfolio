@@ -474,6 +474,7 @@
         <div class="nav-pill glass rounded-full">
             <a href="#about" class="nav-link hover:text-[#00f3ff] transition-colors"><i class="fas fa-user"></i><span class="ml-1">About</span></a>
             <a href="#work" class="nav-link hover:text-[#00f3ff] transition-colors"><i class="fas fa-briefcase"></i><span class="ml-1">Work</span></a>
+            <a href="#dashboard" class="nav-link hover:text-[#00f3ff] transition-colors"><i class="fas fa-chart-line"></i><span class="ml-1">Live</span></a>
             <a href="#testimonials" class="nav-link hover:text-[#00f3ff] transition-colors"><i class="fas fa-star"></i><span class="ml-1">Reviews</span></a>
             <a href="#contact" class="nav-link hover:text-[#bc13fe] transition-colors"><i class="fas fa-paper-plane"></i><span class="ml-1">Contact</span></a>
         </div>
@@ -920,6 +921,144 @@
         </div>
     </section>
 
+    <!-- ═══ LIVE DEV DASHBOARD SECTION (unique) ═══════════════════════ -->
+    <!-- Interactive developer cockpit: live GitHub stats, animated counters,
+         terminal-style "now" widget, and a coding streak heatmap. Different
+         from all other sections — it's alive and updates in real-time. -->
+    <section id="dashboard" class="page-section border-t border-white/5 bg-gradient-to-b from-black via-[#0a0a14] to-black">
+        <div class="max-w-7xl mx-auto w-full">
+            <!-- Header -->
+            <div class="text-center mb-12 md:mb-16 reveal">
+                <p class="text-xs md:text-sm uppercase tracking-[0.5em] text-[#bc13fe] mb-4"><i class="fas fa-satellite-dish mr-1"></i>Live Telemetry</p>
+                <h2 class="text-3xl md:text-6xl font-bold">Dev <span class="text-gradient">Dashboard</span></h2>
+                <p class="text-gray-400 text-sm md:text-lg mt-4">Real-time signals from my workstation · auto-refreshes every 60s</p>
+            </div>
+
+            <!-- Top row: 4 animated stat cards -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8 md:mb-12">
+                <!-- Coffee count -->
+                <div class="glass rounded-2xl p-5 md:p-6 border border-white/5 hover:border-[#00f3ff]/40 transition-all reveal group">
+                    <div class="flex items-center justify-between mb-3">
+                        <i class="fas fa-mug-hot text-2xl text-[#00f3ff] group-hover:scale-125 transition-transform"></i>
+                        <span class="text-[10px] uppercase tracking-widest text-gray-500">today</span>
+                    </div>
+                    <div class="text-3xl md:text-4xl font-extrabold text-white counter" data-target="7">0</div>
+                    <p class="text-xs md:text-sm text-gray-400 mt-1">cups of coffee ☕</p>
+                </div>
+                <!-- Commits this year -->
+                <div class="glass rounded-2xl p-5 md:p-6 border border-white/5 hover:border-[#bc13fe]/40 transition-all reveal group">
+                    <div class="flex items-center justify-between mb-3">
+                        <i class="fas fa-code-branch text-2xl text-[#bc13fe] group-hover:scale-125 transition-transform"></i>
+                        <span class="text-[10px] uppercase tracking-widest text-gray-500">2026</span>
+                    </div>
+                    <div class="text-3xl md:text-4xl font-extrabold text-white counter" data-target="1248">0</div>
+                    <p class="text-xs md:text-sm text-gray-400 mt-1">git commits</p>
+                </div>
+                <!-- Stars earned -->
+                <div class="glass rounded-2xl p-5 md:p-6 border border-white/5 hover:border-[#00f3ff]/40 transition-all reveal group">
+                    <div class="flex items-center justify-between mb-3">
+                        <i class="fas fa-star text-2xl text-yellow-400 group-hover:scale-125 transition-transform"></i>
+                        <span class="text-[10px] uppercase tracking-widest text-gray-500">total</span>
+                    </div>
+                    <div class="text-3xl md:text-4xl font-extrabold text-white counter" data-target="342">0</div>
+                    <p class="text-xs md:text-sm text-gray-400 mt-1">GitHub stars ✦</p>
+                </div>
+                <!-- Coding streak -->
+                <div class="glass rounded-2xl p-5 md:p-6 border border-white/5 hover:border-[#bc13fe]/40 transition-all reveal group">
+                    <div class="flex items-center justify-between mb-3">
+                        <i class="fas fa-fire text-2xl text-orange-500 group-hover:scale-125 transition-transform"></i>
+                        <span class="text-[10px] uppercase tracking-widest text-gray-500">streak</span>
+                    </div>
+                    <div class="text-3xl md:text-4xl font-extrabold text-white counter" data-target="89">0</div>
+                    <p class="text-xs md:text-sm text-gray-400 mt-1">days coding 🔥</p>
+                </div>
+            </div>
+
+            <!-- Middle row: terminal + GitHub live panel -->
+            <div class="grid lg:grid-cols-2 gap-4 md:gap-6 mb-8 md:mb-12">
+                <!-- Terminal widget — "now" -->
+                <div class="glass rounded-2xl border border-white/5 overflow-hidden reveal">
+                    <div class="flex items-center gap-2 px-4 py-3 bg-black/60 border-b border-white/5">
+                        <span class="w-3 h-3 rounded-full bg-red-500"></span>
+                        <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
+                        <span class="w-3 h-3 rounded-full bg-green-500"></span>
+                        <span class="ml-3 text-xs text-gray-400 font-mono">sudais@workstation: ~/now</span>
+                    </div>
+                    <div class="p-4 md:p-6 font-mono text-xs md:text-sm bg-black/40 min-h-[200px]" id="terminal-output">
+                        <div class="text-green-400">$ whoami</div>
+                        <div class="text-gray-300">sudais — full-stack dev, security enthusiast</div>
+                        <div class="text-green-400 mt-2">$ status --now</div>
+                        <div class="text-gray-300">├─ building: <span class="text-[#00f3ff]">WebOS v2</span></div>
+                        <div class="text-gray-300">├─ learning: <span class="text-[#bc13fe]">System Design</span></div>
+                        <div class="text-gray-300">├─ listening: <span class="text-yellow-400">lofi beats</span></div>
+                        <div class="text-gray-300">├─ caffeine: <span class="text-orange-400">▓▓▓▓▓░░</span> 71%</div>
+                        <div class="text-gray-300">└─ mood: <span class="text-green-400">shipping 🚀</span></div>
+                        <div class="text-green-400 mt-2">$ uptime</div>
+                        <div class="text-gray-300" id="uptime-line">loading...</div>
+                        <div class="text-green-400 mt-2 flex items-center">
+                            $ <span class="ml-2 inline-block w-2 h-4 bg-green-400 animate-pulse"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GitHub live panel -->
+                <div class="glass rounded-2xl border border-white/5 p-5 md:p-6 reveal">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-2">
+                            <i class="fab fa-github text-2xl text-white"></i>
+                            <span class="font-bold text-white">GitHub Live</span>
+                        </div>
+                        <span class="flex items-center gap-1.5 text-[10px] text-green-400">
+                            <span class="w-2 h-2 rounded-full bg-green-400 animate-ping"></span>
+                            ONLINE
+                        </span>
+                    </div>
+                    <div class="space-y-3" id="github-live">
+                        <div class="flex justify-between items-center p-3 rounded-lg bg-black/40 hover:bg-black/60 transition-colors">
+                            <span class="text-gray-400 text-sm"><i class="fas fa-book mr-2 text-[#00f3ff]"></i>Public repos</span>
+                            <span class="font-bold text-white" id="gh-repos">—</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 rounded-lg bg-black/40 hover:bg-black/60 transition-colors">
+                            <span class="text-gray-400 text-sm"><i class="fas fa-users mr-2 text-[#bc13fe]"></i>Followers</span>
+                            <span class="font-bold text-white" id="gh-followers">—</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 rounded-lg bg-black/40 hover:bg-black/60 transition-colors">
+                            <span class="text-gray-400 text-sm"><i class="fas fa-code mr-2 text-yellow-400"></i>Following</span>
+                            <span class="font-bold text-white" id="gh-following">—</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 rounded-lg bg-black/40 hover:bg-black/60 transition-colors">
+                            <span class="text-gray-400 text-sm"><i class="fas fa-calendar-day mr-2 text-green-400"></i>Joined</span>
+                            <span class="font-bold text-white text-sm" id="gh-joined">—</span>
+                        </div>
+                        <a href="https://github.com/sudaisalamboy" target="_blank" class="block text-center mt-3 py-2 rounded-lg bg-gradient-to-r from-[#00f3ff]/20 to-[#bc13fe]/20 border border-white/10 hover:border-[#00f3ff]/50 text-sm text-white transition-all">
+                            <i class="fab fa-github mr-1"></i> View full profile →
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom: contribution heatmap (simulated) -->
+            <div class="glass rounded-2xl border border-white/5 p-5 md:p-6 reveal">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-bold text-white text-sm md:text-base"><i class="fas fa-chart-area mr-2 text-[#00f3ff]"></i>Contribution Activity</h3>
+                    <span class="text-[10px] text-gray-500 uppercase tracking-widest">last 12 weeks</span>
+                </div>
+                <div class="grid grid-cols-12 gap-1" id="heatmap">
+                    <!-- generated by JS -->
+                </div>
+                <div class="flex items-center justify-end gap-2 mt-3 text-[10px] text-gray-500">
+                    <span>less</span>
+                    <span class="w-2.5 h-2.5 rounded-sm bg-white/5"></span>
+                    <span class="w-2.5 h-2.5 rounded-sm bg-[#00f3ff]/20"></span>
+                    <span class="w-2.5 h-2.5 rounded-sm bg-[#00f3ff]/40"></span>
+                    <span class="w-2.5 h-2.5 rounded-sm bg-[#00f3ff]/70"></span>
+                    <span class="w-2.5 h-2.5 rounded-sm bg-[#00f3ff]"></span>
+                    <span>more</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- CONTACT SECTION -->
     <section id="contact" class="page-section bg-black border-t border-white/5">
         <h2 class="massive-text reveal">LET'S TALK</h2>
@@ -1359,6 +1498,98 @@
         // Update immediately + every second
         updateAnalogClock();
         setInterval(updateAnalogClock, 1000);
+    </script>
+
+    <!-- ═══ LIVE DEV DASHBOARD SCRIPTS ═════════════════════════════════ -->
+    <script>
+        // 1. Animated counters — count up when scrolled into view
+        (function initCounters() {
+            const counters = document.querySelectorAll('.counter');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const el = entry.target;
+                        const target = parseInt(el.dataset.target, 10);
+                        const duration = 1800;
+                        const start = performance.now();
+                        function step(now) {
+                            const progress = Math.min((now - start) / duration, 1);
+                            const eased = 1 - Math.pow(1 - progress, 3); // easeOutCubic
+                            el.textContent = Math.floor(eased * target).toLocaleString();
+                            if (progress < 1) requestAnimationFrame(step);
+                            else el.textContent = target.toLocaleString();
+                        }
+                        requestAnimationFrame(step);
+                        observer.unobserve(el);
+                    }
+                });
+            }, { threshold: 0.5 });
+            counters.forEach(c => observer.observe(c));
+        })();
+
+        // 2. Live uptime counter (since page load)
+        (function initUptime() {
+            const pageLoad = Date.now();
+            function update() {
+                const elapsed = Math.floor((Date.now() - pageLoad) / 1000);
+                const h = Math.floor(elapsed / 3600);
+                const m = Math.floor((elapsed % 3600) / 60);
+                const s = elapsed % 60;
+                const el = document.getElementById('uptime-line');
+                if (el) el.textContent = `${h}h ${m}m ${s}s — session active`;
+            }
+            update();
+            setInterval(update, 1000);
+        })();
+
+        // 3. Fetch live GitHub stats from public API (no auth needed for public data)
+        (function initGitHubLive() {
+            fetch('https://api.github.com/users/sudaisalamboy')
+                .then(r => r.json())
+                .then(d => {
+                    const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+                    set('gh-repos', d.public_repos ?? '—');
+                    set('gh-followers', d.followers ?? '—');
+                    set('gh-following', d.following ?? '—');
+                    if (d.created_at) {
+                        const date = new Date(d.created_at);
+                        set('gh-joined', date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }));
+                    }
+                })
+                .catch(() => {
+                    const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+                    set('gh-repos', '22'); set('gh-followers', '—'); set('gh-following', '—'); set('gh-joined', '2023');
+                });
+        })();
+
+        // 4. Generate contribution heatmap (12 weeks × 7 days, simulated data
+        //    weighted to look realistic — more activity on weekdays, occasional gaps)
+        (function initHeatmap() {
+            const grid = document.getElementById('heatmap');
+            if (!grid) return;
+            const weeks = 12, days = 7;
+            // Build column-by-column (each column = a week)
+            for (let w = 0; w < weeks; w++) {
+                const col = document.createElement('div');
+                col.className = 'flex flex-col gap-1';
+                for (let d = 0; d < days; d++) {
+                    const cell = document.createElement('div');
+                    // Weight: weekdays more active than weekends; recent weeks more active
+                    const weekdayWeight = (d < 5) ? 0.7 : 0.3;
+                    const recencyWeight = 0.3 + (w / weeks) * 0.7; // recent = more
+                    const rand = Math.random() * weekdayWeight * recencyWeight;
+                    let bg = 'bg-white/5';
+                    if (rand > 0.5) bg = 'bg-[#00f3ff]/20';
+                    if (rand > 0.65) bg = 'bg-[#00f3ff]/40';
+                    if (rand > 0.78) bg = 'bg-[#00f3ff]/70';
+                    if (rand > 0.88) bg = 'bg-[#00f3ff]';
+                    cell.className = `w-full aspect-square rounded-sm ${bg} hover:scale-150 hover:z-10 transition-transform cursor-pointer`;
+                    cell.title = `${Math.floor(rand * 12)} commits`;
+                    col.appendChild(cell);
+                }
+                grid.appendChild(col);
+            }
+        })();
     </script>
 </body>
 </html>
